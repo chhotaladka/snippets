@@ -1,0 +1,7 @@
+.project
+*~
+*.swp
+*.o
+*.so
+*.elf
+*.pyc
