@@ -78,12 +78,12 @@ The following code and commenting templates for eclipse are available for downlo
 
 ### How to import?
 
-goto Window>Preferences>C/C++>Editor>templates>import 
+goto `Window>Preferences>C/C++>Editor>templates>import` 
 
 and chose the file downloaded.
 
 ### Usage:
 
 When you want to use a particular template in your code (given that you are in a C/C++ perspective), 
-just type the usage symbol (e.g.: c_lin) and press Ctrl+Spacebar. In case more than one options are 
+just type the usage symbol (e.g.: `c_lin`) and press `Ctrl+Spacebar`. In case more than one options are 
 available, Eclipse will show them all. Choose accordingly.
