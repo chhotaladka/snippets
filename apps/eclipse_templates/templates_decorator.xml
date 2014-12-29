@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="C Function Prototype" enabled="true" name="c_fun">
+/**PROC+**********************************************************************/
+/* Name:      ${fun_name} */
+/*                                                                           */
+/* Purpose:   ${cursor}		*/
+/*                                                                           */
+/*			  ${ret_val}													 */
+/* Returns:   RC_OK            	-  The method was successful, and  			 */
+/*                                     identified no problems.               */
+/*                                                                           */
+/*            RC_ERR  			-  	The method failed.  					 */
+/*                                                                           */
+/* Params:    IN/OUT param1      - 	Parameter that can be used both as input */
+/*									and output.								 */
+/*                                                                           */
+/*            IN     param2      - 	Input parameter				           	 */
+/*                                                                           */
+/*            OUT    param3       - Output only parameter (usually a pointer)*/
+/*                                                                           */
+/*                                                                           */
+/* Operation: TODO															 */
+/*                                                                           */
+/**PROC-**********************************************************************/
+${ret_val} ${fun_name}()
+{
+	/***************************************************************************/
+	/*	Local Variables														   */
+	/***************************************************************************/
+	/***************************************************************************/
+	/*	Sanity Checks														   */
+	/***************************************************************************/
+
+	/***************************************************************************/
+	/*	Main Routine														   */
+	/***************************************************************************/
+	
+	/***************************************************************************/
+	/*	Exit Checks															   */
+	/***************************************************************************/
+		
+} /* ${fun_name} */</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Line comment" enabled="true" name="c_lin">/***************************************************************************/
+/* ${cursor}	    */
+/***************************************************************************/</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="C Structure" enabled="true" name="c_struct">/**STRUCT+********************************************************************/
+/* Structure: ${typedef_name}												 */
+/*                                                                           */
+/* Name:      ${struct_name}												 */
+/*                                                                           */
+/* Textname:  ${text_name}	*/
+/*                                                                           */
+/* Owner:     ${owner}                                            */
+/*                                                                           */
+/* Description: ${descr}        */
+/*                                                                           */
+/*****************************************************************************/
+typedef struct ${struct_name} {
+	${cursor}
+} ${typedef_name};
+
+/**STRUCT-********************************************************************/</template></templates>
