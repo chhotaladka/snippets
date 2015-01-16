@@ -1,0 +1,9 @@
+"The following would set the vim to use 4 spaces as tabs, and an indent of 4 spaces.
+set tabstop=4 shiftwidth=4 expandtab
+"Autoindent code for the most parts (they say this is the simplest and stupidest method)
+set autoindent
+"But for makefiles, there must be tabs
+autocmd FileType make setlocal noexpandtab
+"For python: I've taken it verbatim from the vim tutorial
+autocmd BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
+set softtabstop=4 " makes the spaces feel like real tabs
