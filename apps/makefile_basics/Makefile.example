@@ -1,0 +1,156 @@
+# Sample Make file with colored warnings and errors
+# author: Abhishek
+
+# Color coding for make output
+NO_COLOR=\x1b[0m
+OK_COLOR=\x1b[32;01m
+ERROR_COLOR=\x1b[31;01m
+WARN_COLOR=\x1b[34;01m
+
+#added because above code does not work with echo in some machines
+CC_COLOR=\033[35;01m
+LD_COLOR=\033[35;02m
+ECHO_NO_COLOR=\033[0m
+
+
+# Output strings
+OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
+ERROR_STRING=$(ERROR_COLOR)[ERROR]$(NO_COLOR)
+WARN_STRING=$(WARN_COLOR)[WARNING]$(NO_COLOR)
+
+
+#name of final Image
+MYPROGRAM := SampleProgram
+
+# check for system architecture (32 or 64 bit) if compiling for HOST OS 
+# exit if flag is not right
+
+LBITS := $(shell getconf LONG_BIT)
+ifneq ($(MAKECMDGOALS), clean)
+ifneq ($(ARCH), ppc)
+ifeq ($(LBITS),64)
+
+x64 := on
+
+endif
+endif
+endif
+
+# set up cross compile value
+CROSS_COMPILE = 
+ifeq ($(x64), on)
+ARC = x86_64
+CFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -m64
+LDFLAGS =  -lstdc++ -pthread -lrt
+else
+ARC = x86
+CFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -m32
+LDFLAGS =  -lstdc++ -pthread -lrt
+endif
+
+
+# Add Path of source files
+SOURCE_PATH :=${PWD}/
+# Add include path for source file
+INCLUDE_PATH := -I${PWD}/
+
+# objects needed for linking of final image
+OBJECTS := $(patsubst %.cc,%.o,$(wildcard $(addsuffix *.cc,$(SOURCE_PATH))))
+OBJECTS += $(patsubst %.c,%.o,$(wildcard $(addsuffix *.c,$(SOURCE_PATH))))
+
+# Compilation tool
+CC = $(CROSS_COMPILE)gcc
+CXX = $(CROSS_COMPILE)g++
+
+# Compilation flags for c++ files
+EXTRA_CFLAGS = 
+CXXFLAGS += $(EXTRA_FLAGS) $(INCLUDE_PATH)  
+#------------------------------------------------------------------------------
+
+# print information of All flags and compile options
+$(info ******************************************************)
+ifneq ($(MAKECMDGOALS), clean)
+$(info Compiling Image for $(MYPROGRAM) )
+$(info CC = $(CC))
+$(info CXX = $(CXX))
+else
+$(info Cleaning Image for $(MYPROGRAM) )
+endif
+$(info ******************************************************)
+
+
+# target of makefile to create final Image and tester application
+all: $(MYPROGRAM)
+
+$(MYPROGRAM): $(OBJECTS)
+	@echo '******************************************************'
+	@echo -e '$(LD_COLOR) LD $(ECHO_NO_COLOR) $(MYPROGRAM)'
+	@${CXX}  $(CXXFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
+	@echo 'Image = $(MYPROGRAM)'
+	@echo -e 'architecture = $(ARC)'
+	@md5sum $(MYPROGRAM)
+	@echo '******************************************************'
+
+-include $(OBJECTS:.o=.d)
+
+# Rules for Compilation of CPP source files
+%.o: %.cc	
+	@echo -e '$(CC_COLOR) CXX $(ECHO_NO_COLOR) $<'
+	@$(CXX) $(CXXFLAGS) -o $@  -c  $< 2>tmp.log;sed -e 's/error/$(ERROR_STRING)/' -e 's/warning/$(WARN_STRING)/' <tmp.log
+   
+	# more complicated dependency computation, so all prereqs listed
+        # # will also become command-less, prereq-less targets
+        # #   sed:    strip the target (everything before colon)
+        # #   sed:    remove any continuation backslashes
+        # #   fmt -1: list words one per line
+        # #   sed:    strip leading spaces
+        # #   sed:    add trailing colons
+	@$(CXX) -MM $(CXXFLAGS) $< > $*.d
+	@mv -f $*.d $*.d.tmp
+	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp
+	
+# Rules for Compilation of CPP source files
+%.o: %.cpp	
+	@echo -e '$(CC_COLOR) CXX $(ECHO_NO_COLOR) $<'
+	@$(CXX) $(CXXFLAGS) -o $@  -c  $< 2>tmp.log;sed -e 's/error/$(ERROR_STRING)/' -e 's/warning/$(WARN_STRING)/' <tmp.log
+	# more complicated dependency computation, so all prereqs listed
+	# will also become command-less, prereq-less targets
+	# sed:    strip the target (everything before colon)
+	# sed:    remove any continuation backslashes
+	# fmt -1: list words one per line
+	# sed:    strip leading spaces
+	# sed:    add trailing colons
+	@$(CXX) -MM $(CXXFLAGS) $< > $*.d
+	@mv -f $*.d $*.d.tmp
+	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+         sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp                                                   
+
+
+# Rules for Compilation of C source files
+%.o: %.c
+	@echo -e '$(CC_COLOR) CXX $(ECHO_NO_COLOR) $<'
+	@$(CC) $(CFLAGS) -o $@  -c  $< 2>tmp.log;sed -e 's/error/$(ERROR_STRING)/' -e 's/warning/$(WARN_STRING)/' <tmp.log
+   
+	# more complicated dependency computation, so all prereqs listed
+        # # will also become command-less, prereq-less targets
+        # #   sed:    strip the target (everything before colon)
+        # #   sed:    remove any continuation backslashes
+        # #   fmt -1: list words one per line
+        # #   sed:    strip leading spaces
+        # #   sed:    add trailing colons
+	@$(CC) -MM $(CFLAGS) $< > $*.d
+	@mv -f $*.d $*.d.tmp
+	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp
+
+clean:
+	rm -f $(MYPROGRAM) $(OBJECTS) *.o tmp.log $(SOURCE_PATH)*.d
