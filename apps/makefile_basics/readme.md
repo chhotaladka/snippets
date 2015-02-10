@@ -10,7 +10,7 @@ The following makefile examples are available for download and reuse.
 3. Dependency resolution for the source files.
 4. Quite output of the compilation.
 
-Following customization is required before using this makefile in you project:
+Following customizations are required before using this makefile in your project:
 
 1. Specify the project name in `MYPROGRAM` variable.
 2. Specify the `CROSS_COMPILE` variable if need be.
