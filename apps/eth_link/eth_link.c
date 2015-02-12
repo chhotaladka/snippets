@@ -9,16 +9,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <fcntl.h>
-#include <getopt.h>
-#include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
 #include <linux/ethtool.h>
 #include <linux/sockios.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <stdint.h>
 #include <time.h>
 
 
