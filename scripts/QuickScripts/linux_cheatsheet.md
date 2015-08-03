@@ -38,3 +38,13 @@ __Variant 2__: No confirmation
 ```bash
 find . -type f -name "*.foo" -exec rm -f {} \;
 ``` 
+
+### Change terminal prompt (for example when in a virtual-env)
+
+Set `$PS1` variable to what you want.
+
+example:
+
+````bash
+PS1="(sandbox)$PS1"
+````
