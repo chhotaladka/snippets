@@ -6,14 +6,32 @@ Networking related terminal commands and features.
   brctl addbr br0
   ```
   
+  or
+  
+  ```bash
+  ip link add br0 type bridge
+  ```
+  
 2. Add a _Virtual ethernet_ interface pair `veth0` and `veth1`
   ```bash
   ip link add type veth
   ```
   
+  or
+  
+  ```bash
+  ip link add dev veth0 type veth peer name veth1
+  ```
+  
 3. Add interface `veth0` to bridge `br0`
   ```bash
   brctl addif br0 veth0 
+  ```
+  
+  or
+  
+  ```bash
+  ip link set veth0 master br0
   ```  
   
 4. Set MAC Address of an interface (say `veth0`)
@@ -30,4 +48,18 @@ Networking related terminal commands and features.
   ```bash
   ip addr flush dev eth1
   ```
+
+7. Ping from a particular interface `eth1`
+  ```bash
+  ping -I eth1 10.3.4.4
+  ``` 
   
+8. Add a Tap interface
+  ```bash
+  ip tuntap add tapm mode tap
+  ```
+  
+9. Bring Up/Down an interface using iproute2 suite
+  ```bash
+  ip link set dev eth1 up
+  ```
