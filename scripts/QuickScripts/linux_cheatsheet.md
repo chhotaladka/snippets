@@ -39,6 +39,11 @@ __Variant 2__: No confirmation
 find . -type f -name "*.foo" -exec rm -f {} \;
 ``` 
 
+### Set date and time from terminal
+```bash
+sudo date _MMDDhhmmYYYY.ss_
+```
+
 ### Change terminal prompt (for example when in a virtual-env)
 
 Set `$PS1` variable to what you want.
@@ -48,3 +53,35 @@ example:
 ````bash
 PS1="(sandbox)$PS1"
 ````
+
+## GDB
+
+### Separate debug symbols and binary
+
+[Stackoverflow](http://stackoverflow.com/questions/866721/how-to-generate-gcc-debug-symbol-outside-the-build-target)
+
+```
+Compile with debug information:
+
+gcc -g -o main main.c
+Separate the debug information:
+
+objcopy --only-keep-debug main main.debug
+or
+
+cp main main.debug
+strip --only-keep-debug main.debug
+Strip debug information from origin file:
+
+objcopy --strip-debug main
+or
+
+strip --strip-debug --strip-unneeded main
+debug by debuglink mode:
+
+objcopy --add-gnu-debuglink main.debug main
+gdb main
+You can also use exec file and symbol file separatly:
+
+gdb -s main.debug -e main
+```
