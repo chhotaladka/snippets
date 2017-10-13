@@ -1,6 +1,20 @@
 Quick Script snippets to achieve a manual function quickly using bash shell scripts.
 ------------------------------------------------------------------------------------
 
+###Replace all tabs by white spaces in all files with given extension in the folder and subfolders
+```bash
+find . -type f -name "*\.[ch]" -exec sed -i.orig 's/\t/    /g' {} +
+```
+
+###Rename all files in folders with a different naming convention
+```bash
+rename 's/<prev_name>/<new_name>/' *.[ch]
+```
+or
+```
+find . -name '<pattern>' -exec bash -c 'mv $0 ${0/<pattern>/<new pattern>}' {} \;
+```
+
 ### Auto rename all file names containing 'foo' with 'bar'
 
 ```bash
@@ -53,6 +67,28 @@ example:
 ````bash
 PS1="(sandbox)$PS1"
 ````
+
+### Turn off all monitors for sleep mode:
+
+```
+xset -display :0.0 dpms force off
+```
+
+Pressing `enter` turns them back on.
+
+For a single monitor, this will also do:
+
+```
+sudo vbetool dpms off
+
+sudo vbetool dpms on
+```
+
+To allow returning to normal state on pressing enter:
+
+```
+sudo sh -c 'vbetool dpms off; read ans; vbetool dpms on'
+```
 
 ## GDB
 
