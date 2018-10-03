@@ -32,7 +32,7 @@ Networking related terminal commands and features.
   
   ```bash
   ip link set veth0 master br0
-  ```  
+  ```
   
 4. Set MAC Address of an interface (say `veth0`)
   ```bash
@@ -62,4 +62,18 @@ Networking related terminal commands and features.
 9. Bring Up/Down an interface using iproute2 suite
   ```bash
   ip link set dev eth1 up
+  ```
+
+10. Create a namespace
+  ```bash
+  ip netns add vrf1
+  ```
+
+11. Assign interface to a VRF
+  ```bash
+  ip link eth0 setns vrf1
+  ```
+10. Create a VLAN interface on an interface
+  ```
+  ip link add link eth0 name phy-1-1-1 type vlan id 1
   ```

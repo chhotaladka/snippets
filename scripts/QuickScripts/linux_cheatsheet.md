@@ -15,6 +15,9 @@ or
 find . -name '<pattern>' -exec bash -c 'mv $0 ${0/<pattern>/<new pattern>}' {} \;
 ```
 
+find substitutes `{}` with the found things. `\;` causes the exec to be invoked per file, whereas using `+` would 
+pass everything at once
+
 ### Auto rename all file names containing 'foo' with 'bar'
 
 ```bash
@@ -120,4 +123,29 @@ gdb main
 You can also use exec file and symbol file separatly:
 
 gdb -s main.debug -e main
+```
+
+## Code diff 
+
+### Remove all comments from a C/C++ code so that we can do a diff on actual meat and not on fluff
+```
+gcc -fpreprocessed -dD -E test.c
+```
+
+For a full folder, use it with find
+```
+find . -name "*.c" -exec bash -c 'gcc -fpreprocessed -dD -E $0 > $0.new' {} \;
+find . -name "*.new" -exec bash -c 'mv $0 ${0/%.new/}' {} \;
+```
+
+## Valgrind
+
+### Using a suppression file
+
+```
+valgrind --leak-check=full --show-reachable=yes --error-limit=no --max-stackframe=8388608 --gen-suppresions=all --log-file=6wad.log.supp --suppressions=/usr/lib/valgrind/6wad.supp /usr/bin/metacli/6wad/6wad
+```
+
+```
+valgrind --leak-check=full --show-reachable=yes --error-limit=no --max-stackframe=8388608 --gen-suppressions=all --log-file=nbase-stub.log.supp --suppressions=/usr/lib/valgrind/nbase-stub.supp $NBASE_STUB_DIR/$NBASE_STUB_BIN > $NBASE_STUB_RUN_DIR/"$NBASE_STUB_BIN.log" 2>&1 &
 ```
