@@ -71,9 +71,10 @@ Networking related terminal commands and features.
 
 11. Assign interface to a VRF
   ```bash
-  ip link eth0 setns vrf1
+  ip link set eth0 netns vrf1
   ```
-10. Create a VLAN interface on an interface
+  
+12. Create a VLAN interface on an interface
   ```
   ip link add link eth0 name phy-1-1-1 type vlan id 1
   ```
